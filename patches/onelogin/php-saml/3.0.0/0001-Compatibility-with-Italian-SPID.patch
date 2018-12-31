@@ -1,0 +1,50 @@
+From 2325e1691ff83ea6244b0df5293a83592558abfd Mon Sep 17 00:00:00 2001
+From: Michele Locati <michele@locati.it>
+Date: Mon, 31 Dec 2018 17:23:55 +0100
+Subject: [PATCH] Compatibility with Italian SPID
+
+---
+ src/Saml2/AuthnRequest.php | 5 ++---
+ src/Saml2/Metadata.php     | 3 ++-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/Saml2/AuthnRequest.php b/src/Saml2/AuthnRequest.php
+index 2dd6bd2..9183776 100644
+--- a/src/Saml2/AuthnRequest.php
++++ b/src/Saml2/AuthnRequest.php
+@@ -130,7 +130,6 @@ REQUESTEDAUTHN;
+         }
+ 
+         $spEntityId = htmlspecialchars($spData['entityId'], ENT_QUOTES);
+-        $acsUrl = htmlspecialchars($spData['assertionConsumerService']['url'], ENT_QUOTES);
+         $request = <<<AUTHNREQUEST
+ <samlp:AuthnRequest
+     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+@@ -140,8 +139,8 @@ REQUESTEDAUTHN;
+ {$providerNameStr}{$forceAuthnStr}{$isPassiveStr}
+     IssueInstant="$issueInstant"
+     Destination="{$idpData['singleSignOnService']['url']}"
+-    ProtocolBinding="{$spData['assertionConsumerService']['binding']}"
+-    AssertionConsumerServiceURL="{$acsUrl}">
++    AssertionConsumerServiceIndex="1"
++    AttributeConsumingServiceIndex="1">
+     <saml:Issuer>{$spEntityId}</saml:Issuer>
+ {$nameIdPolicyStr}
+ {$requestedAuthnStr}
+diff --git a/src/Saml2/Metadata.php b/src/Saml2/Metadata.php
+index 2efd113..5bb4dde 100644
+--- a/src/Saml2/Metadata.php
++++ b/src/Saml2/Metadata.php
+@@ -182,7 +182,8 @@ METADATA_TEMPLATE;
+ {$sls}        <md:NameIDFormat>{$sp['NameIDFormat']}</md:NameIDFormat>
+         <md:AssertionConsumerService Binding="{$sp['assertionConsumerService']['binding']}"
+                                      Location="{$acsUrl}"
+-                                     index="1" />
++                                     index="1"
++                                     isDefault="true" />
+         {$strAttributeConsumingService}
+     </md:SPSSODescriptor>{$strOrganization}{$strContacts}
+ </md:EntityDescriptor>
+-- 
+2.20.1.windows.1
+

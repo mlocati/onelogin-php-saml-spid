@@ -1,0 +1,24 @@
+{
+    "name": "mlocati/onelogin-php-saml-spid",
+    "description": "Patches for onelogin/php-saml required for Italian SPID",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michele Locati",
+            "email": "michele@locati.it",
+            "role": "author"
+        }
+    ],
+    "require": {
+        "mlocati/composer-patcher": "^1.0.0"
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "patches": {
+            "onelogin/php-saml:3.0.0": {
+                "Compatibility with the Italian SPID system": "patches/onelogin/php-saml/3.0.0/0001-Compatibility-with-Italian-SPID.patch"
+            }
+        }
+    }
+}
